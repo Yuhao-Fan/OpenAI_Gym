@@ -12,7 +12,7 @@ args = parser.parse_args()
 print("torch.cuda.is_available()", torch.cuda.is_available())  # Should return True
 
 # Create the LunarLander environment
-env_id = "LunarLander-v2"
+env_id = "CarRacing-v2"
 n_envs = 16
 env = make_vec_env(env_id, n_envs=n_envs)
 

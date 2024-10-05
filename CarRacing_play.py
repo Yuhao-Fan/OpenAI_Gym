@@ -5,20 +5,21 @@ from stable_baselines3.common.evaluation import evaluate_policy
 # Load the trained PPO model
 model = PPO.load("logs/best_model.zip")
 # Create the evaluation environment only for evaluate_policy
-eval_envs = make_vec_env("LunarLander-v2", n_envs=1)
-# Evaluate
-print("Evaluating model")
-mean_reward, std_reward = evaluate_policy(
-    model,
-    eval_envs,
-    n_eval_episodes=20,
-    deterministic=True,
-)
-print(f"Mean reward = {mean_reward:.2f} +/- {std_reward:.2f}")
+env_id = "CarRacing-v2"
+# eval_envs = make_vec_env(env_id, n_envs=1)
+# # Evaluate
+# print("Evaluating model")
+# mean_reward, std_reward = evaluate_policy(
+#     model,
+#     eval_envs,
+#     n_eval_episodes=20,
+#     deterministic=True,
+# )
+# print(f"Mean reward = {mean_reward:.2f} +/- {std_reward:.2f}")
 
 
 # Create the environment with render_mode="human"
-env = gym.make("LunarLander-v2", render_mode="human")
+env = gym.make(env_id, render_mode="human")
 
 # Reset the environment and extract the observation
 obs, info = env.reset()

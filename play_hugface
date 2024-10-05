@@ -1,0 +1,39 @@
+import gymnasium as gym
+from stable_baselines3 import PPO
+from stable_baselines3.common.env_util import make_vec_env
+from stable_baselines3.common.evaluation import evaluate_policy
+# Load the trained PPO model
+model = PPO.load("logs/best_model.zip")
+
+# Create the environment with render_mode="human"
+env = make_vec_env("LunarLander-v2", n_envs=1)
+
+# Evaluate
+print("Evaluating model")
+mean_reward, std_reward = evaluate_policy(
+    model,
+    env,
+    n_eval_episodes=20,
+    deterministic=True,
+)
+print(f"Mean reward = {mean_reward:.2f} +/- {std_reward:.2f}")
+
+# Reset the environment and extract the observation
+obs = env.reset()
+try:
+    while True:
+        # Use the trained model to predict actions
+        action, _states = model.predict(obs, deterministic=True)
+
+        # Take the action in the environment and unpack the result
+        obs, rewards, dones, info = env.step(action)
+
+        # Render the environment
+        env.render()
+
+        # Check if the episode is done or truncated and reset the environment
+        if dones:
+            obs = env.reset()
+except KeyboardInterrupt:
+    pass
+
